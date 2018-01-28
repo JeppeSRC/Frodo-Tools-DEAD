@@ -1,0 +1,13 @@
+﻿<Window x:Class="FDconverter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FDconverter"
+        mc:Ignorable="d"
+        Title="Frodo Converter" Width="1000" Height="600"
+        ResizeMode="CanMinimize">
+    <Grid Margin="10,10,10,10" RenderTransformOrigin="1.32,-0.64">
+
+    </Grid>
+</Window>
