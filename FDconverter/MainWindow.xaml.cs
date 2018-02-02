@@ -50,21 +50,46 @@ namespace FDconverter {
             
         }
 
-        private void AddFiles(String[] files) {
+        private bool AddFolder(string folder) {
+            List<string> f = null;
+            try {
+                 f = new List<string>(Directory.EnumerateDirectories(folder));
+            } catch (Exception e) {
+                MessageBox.Show(e.Message, string.Format("Exception enumarting folder \"{0}\"", folder), MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (f.Count >= 0) {
+                AddFolders(f.ToArray());
+            }
+
+            f = new List<string>(Directory.EnumerateFiles(folder));
+
+            AddFiles(f.ToArray());
+
+            return true;
+        }
+
+        private void AddFolders(string[] folders) {
+            for (int i = 0; i < folders.Length; i++) {
+                AddFolder(folders[i]);
+            }
+        }
+
+        private void AddFiles(string[] files) {
             for (int i = 0; i < files.Length; i++) {
                 try {
                     FileStream file = new FileStream(files[i], FileMode.Open);
                     this.files.Add(new FDFile(files[i], file.Length));
                     file.Close();
                 } catch(Exception e) {
-                    Console.WriteLine(e.ToString());
+                    if (AddFolder(files[i]) == false) MessageBox.Show(e.GetType().ToString(), string.Format("Exception Opening \"{0}\"", files[i]), MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
 
         private void lvFiles_Drop(object sender, DragEventArgs e) {
-            String[] s = (String[])e.Data.GetData(DataFormats.FileDrop);
-            AddFiles(s);           
+            AddFiles((string[])e.Data.GetData(DataFormats.FileDrop));
         }
 
         private void lvFiles_KeyDown(object sender, KeyEventArgs e) { 
