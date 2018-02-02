@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -41,13 +42,15 @@ namespace FDconverter {
 
         private ObservableCollection<FDFile> files;
 
+        private string exePath;
+
         public MainWindow() {
             InitializeComponent();
-
+             
             files = new ObservableCollection<FDFile>();
 
             lvFiles.ItemsSource = files;
-            
+            exePath = Assembly.GetEntryAssembly().Location;
         }
 
         private bool AddFolder(string folder) {
@@ -144,6 +147,19 @@ namespace FDconverter {
         }
 
         private void lvFiles_MouseDown(object sender, MouseButtonEventArgs e) {
+
+        }
+
+        private void Button_Click_Destination(object sender, RoutedEventArgs e) {
+            System.Windows.Forms.FolderBrowserDialog diag = new System.Windows.Forms.FolderBrowserDialog();
+
+            diag.RootFolder = Environment.SpecialFolder.MyComputer;
+            if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                tvDstPath.Text = diag.SelectedPath;
+            }
+        }
+
+        private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 
         }
     }

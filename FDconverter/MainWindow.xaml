@@ -7,8 +7,8 @@
         mc:Ignorable="d"
         Title="Frodo Converter" Width="1000" Height="600"
         ResizeMode="CanMinimize">
-    <Grid Margin="10,10,10,10" RenderTransformOrigin="1.32,-0.64">
-        <ListView x:Name="lvFiles" HorizontalAlignment="Left" Height="182" Margin="10,359,0,0" VerticalAlignment="Top" Width="954" RenderTransformOrigin="0.23,-0.65" DragDrop.Drop="lvFiles_Drop" AllowDrop="True" KeyDown="lvFiles_KeyDown" MouseDown="lvFiles_MouseDown">
+    <Grid Margin="10,10,10,10">
+        <ListView x:Name="lvFiles" HorizontalAlignment="Left" Margin="10,329,0,0" Width="954" DragDrop.Drop="lvFiles_Drop" AllowDrop="True" KeyDown="lvFiles_KeyDown" MouseDown="lvFiles_MouseDown" Height="182" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Path" Width="500" DisplayMemberBinding="{Binding path}"/>
@@ -24,10 +24,14 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Add" HorizontalAlignment="Left" Margin="10,334,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.307,0.45" Click="Button_Click_Add"/>
-        <Button Content="Remove" HorizontalAlignment="Left" Margin="115,334,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Remove"/>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="220,334,0,0" VerticalAlignment="Top" Width="100"/>
-        <ProgressBar HorizontalAlignment="Left" Height="20" Margin="325,334,0,0" VerticalAlignment="Top" Width="639"/>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="10,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Add"/>
+        <Button Content="Remove" HorizontalAlignment="Left" Margin="115,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Remove"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="220,304,0,0" VerticalAlignment="Top" Width="100"/>
+        <ProgressBar HorizontalAlignment="Left" Height="20" Margin="325,304,0,0" VerticalAlignment="Top" Width="639"/>
+        <Label Content="Type: " HorizontalAlignment="Left" Margin="10,-4,0,0" VerticalAlignment="Top" Width="50"/>
+        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged"/>
+        <Button Content="Destination" HorizontalAlignment="Left" Margin="10,521,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Destination"/>
+        <TextBox x:Name="tvDstPath" HorizontalAlignment="Left" Height="20" Margin="115,521,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="849"/>
 
     </Grid>
 </Window>
