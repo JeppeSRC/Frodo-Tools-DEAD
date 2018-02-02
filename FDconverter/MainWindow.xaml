@@ -8,6 +8,26 @@
         Title="Frodo Converter" Width="1000" Height="600"
         ResizeMode="CanMinimize">
     <Grid Margin="10,10,10,10" RenderTransformOrigin="1.32,-0.64">
+        <ListView x:Name="lvFiles" HorizontalAlignment="Left" Height="182" Margin="10,359,0,0" VerticalAlignment="Top" Width="954" RenderTransformOrigin="0.23,-0.65" DragDrop.Drop="lvFiles_Drop" AllowDrop="True" KeyDown="lvFiles_KeyDown" MouseDown="lvFiles_MouseDown">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Path" Width="500" DisplayMemberBinding="{Binding path}"/>
+                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding type}"/>
+                    <GridViewColumn Header="Size" Width="150" DisplayMemberBinding="{Binding sizeString}"/>
+                    <GridViewColumn Header="Progress" Width="175" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ProgressBar HorizontalAlignment="Center" Width="160" Height="10" Value="{Binding progress}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Add" HorizontalAlignment="Left" Margin="10,334,0,0" VerticalAlignment="Top" Width="100" RenderTransformOrigin="0.307,0.45" Click="Button_Click_Add"/>
+        <Button Content="Remove" HorizontalAlignment="Left" Margin="115,334,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Remove"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="220,334,0,0" VerticalAlignment="Top" Width="100"/>
+        <ProgressBar HorizontalAlignment="Left" Height="20" Margin="325,334,0,0" VerticalAlignment="Top" Width="639"/>
 
     </Grid>
 </Window>
