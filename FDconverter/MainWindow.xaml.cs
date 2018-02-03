@@ -59,7 +59,25 @@ namespace FDconverter {
             types[(int)FileType.Image] = FileType.Image;
             types[(int)FileType.Model] = FileType.Model;
 
+
+            TextureChannel[] channels = new TextureChannel[4];
+
+            for (int i = 0; i < 4; i++) {
+                channels[i] = (TextureChannel)i;
+            }
+
+            TextureChannelType[] channelTypes = new TextureChannelType[4];
+
+            for (int i = 0; i < 4; i++) {
+                channelTypes[i] = (TextureChannelType)i;
+            }
+
             cbType.ItemsSource = types;
+            cbImageChannels.ItemsSource = channels;
+            cbImageSizes.ItemsSource = channelTypes;
+
+            imageOptionsGroup.Visibility = Visibility.Hidden;
+            modelOptionsGroup.Visibility = Visibility.Hidden;
 
             tvDstPath.Text = exePath + "ouput\\";
         }
@@ -68,7 +86,7 @@ namespace FDconverter {
             List<string> f = null;
             try {
                 f = new List<string>(Directory.EnumerateDirectories(folder));
-            } catch (IOException e) {
+            } catch (IOException) {
                 return false;
             }catch (Exception e) {
                 MessageBox.Show(e.Message, string.Format("Exception enumarting folder \"{0}\"", folder), MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -210,7 +228,7 @@ namespace FDconverter {
             if (cbType.SelectedIndex == -1) return;
 
             List<FDFile> selected = lvFiles.SelectedItems.Cast<FDFile>().ToList();
-            
+
             List<int> indices = GetFileIndices(selected);
 
             FileType type = (FileType)cbType.SelectedIndex;
@@ -227,6 +245,10 @@ namespace FDconverter {
                 }
             }
 
+           for (int i = 0; i < indices.Count; i++) {
+                lvFiles.SelectedItems.Add(files[indices[i]]);
+            }
+
             SetOptionsGroupVisibility((FileType)cbType.SelectedIndex);
         }
 
@@ -235,14 +257,30 @@ namespace FDconverter {
             FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
 
             cbType.SelectionChanged -= cbType_SelectionChanged;
+            cbImageChannels.SelectionChanged -= cbImageChannels_SelectionChanged;
+            cbImageSizes.SelectionChanged -= cbImageSizes_SelectionChanged;
 
             cbType.SelectedIndex = 0;
+            cbImageChannels.SelectedIndex = 0;
+            cbImageSizes.SelectedIndex = 0;
 
             for (int i = 1; i < lvFiles.SelectedItems.Count; i++) {
                 FDFile file = (FDFile)lvFiles.SelectedItems[i];
                 if (tmp.type != file.type) {
                     cbType.SelectedIndex = -1;
                 }
+
+                if (imageOptionsGroup.IsVisible) {
+                    if (((FDTextureFile)tmp).channel != ((FDTextureFile)file).channel) {
+                        cbImageChannels.SelectedIndex = -1;
+                    }
+
+                    if (((FDTextureFile)tmp).channelType != ((FDTextureFile)file).channelType) {
+                        cbImageSizes.SelectedIndex = -1;
+                    }
+                }
+
+                
             }
 
             if (cbType.SelectedIndex == 0) {
@@ -253,7 +291,19 @@ namespace FDconverter {
                 modelOptionsGroup.Visibility = Visibility.Hidden;
             }
 
+            if (imageOptionsGroup.IsVisible) {
+                if (cbImageChannels.SelectedIndex == 0) {
+                    cbImageChannels.SelectedIndex = (int)((FDTextureFile)tmp).channel;
+                }
+
+                if (cbImageSizes.SelectedIndex == 0) {
+                    cbImageSizes.SelectedIndex = (int)((FDTextureFile)tmp).channelType;
+                }
+            }
+
             cbType.SelectionChanged += cbType_SelectionChanged;
+            cbImageChannels.SelectionChanged += cbImageChannels_SelectionChanged;
+            cbImageSizes.SelectionChanged += cbImageSizes_SelectionChanged;
 
             UpdateIncludeAllCheckbox();
         }
@@ -280,7 +330,7 @@ namespace FDconverter {
 
         private void cbImageChannels_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
-                ((FDTextureFile)lvFiles.SelectedItems[i]).channel = (TextureChannels)cbImageChannels.SelectedIndex;
+                ((FDTextureFile)lvFiles.SelectedItems[i]).channel = (TextureChannel)cbImageChannels.SelectedIndex;
             }
         }
 

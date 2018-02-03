@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FDconverter {
 
-    public enum TextureChannels {
+    public enum TextureChannel {
         R,
         RG,
         RGB,
@@ -22,18 +22,20 @@ namespace FDconverter {
 
     class FDTextureFile : FDFile {
 
-        private TextureChannels _channel;
+        private TextureChannel _channel;
         private TextureChannelType _type;
 
-        public TextureChannels channel { get { return _channel; } set { _channel = value; OnPropertyChanged(); } }
+        public TextureChannel channel { get { return _channel; } set { _channel = value; OnPropertyChanged(); } }
         public TextureChannelType channelType{ get { return _type; } set { _type = value; OnPropertyChanged(); } }
 
         public FDTextureFile(FDFile file) : base(file, FileType.Image) {
-
+            channel = TextureChannel.RGBA;
+            channelType = TextureChannelType.Uint8;
         }
 
         public FDTextureFile(string path) : base(path, FileType.Image) {
-            
+            channel = TextureChannel.RGBA;
+            channelType = TextureChannelType.Uint8;
         }
 
     }
