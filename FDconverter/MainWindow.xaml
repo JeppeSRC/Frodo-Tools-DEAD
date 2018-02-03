@@ -8,10 +8,17 @@
         Title="Frodo Converter" Width="1000" Height="600"
         ResizeMode="CanMinimize">
     <Grid Margin="10,10,10,10">
-        <ListView x:Name="lvFiles" HorizontalAlignment="Left" Margin="10,329,0,0" Width="954" DragDrop.Drop="lvFiles_Drop" AllowDrop="True" KeyDown="lvFiles_KeyDown" MouseDown="lvFiles_MouseDown" Height="182" VerticalAlignment="Top">
+        <ListView x:Name="lvFiles" HorizontalAlignment="Left" Margin="10,329,0,0" Width="954" DragDrop.Drop="lvFiles_Drop" AllowDrop="True" KeyDown="lvFiles_KeyDown" SelectionChanged="lvFiles_SelectionChanged" Height="182" VerticalAlignment="Top">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Path" Width="500" DisplayMemberBinding="{Binding path}"/>
+                    <GridViewColumn Header="Included" Width="30">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox Name="ckbItem"  HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" IsChecked="{Binding included}" Checked="ckbItem_Checked" Unchecked="ckbItem_Unchecked"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Path" Width="472" DisplayMemberBinding="{Binding path}"/>
                     <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding type}"/>
                     <GridViewColumn Header="Size" Width="150" DisplayMemberBinding="{Binding sizeString}"/>
                     <GridViewColumn Header="Progress" Width="175" >
@@ -27,11 +34,18 @@
         <Button Content="Add" HorizontalAlignment="Left" Margin="10,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Add"/>
         <Button Content="Remove" HorizontalAlignment="Left" Margin="115,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Remove"/>
         <Button Content="Start" HorizontalAlignment="Left" Margin="220,304,0,0" VerticalAlignment="Top" Width="100"/>
-        <ProgressBar HorizontalAlignment="Left" Height="20" Margin="325,304,0,0" VerticalAlignment="Top" Width="639"/>
-        <Label Content="Type: " HorizontalAlignment="Left" Margin="10,-4,0,0" VerticalAlignment="Top" Width="50"/>
-        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged"/>
+        <ProgressBar x:Name="pbTotal" HorizontalAlignment="Left" Height="20" Margin="325,304,0,0" VerticalAlignment="Top" Width="639"/>
+        <Label Content="Type: " HorizontalAlignment="Left" Margin="10,-4,0,0" VerticalAlignment="Top" Width="41" />
+        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="51,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged"/>
         <Button Content="Destination" HorizontalAlignment="Left" Margin="10,521,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Destination"/>
-        <TextBox x:Name="tvDstPath" HorizontalAlignment="Left" Height="20" Margin="115,521,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="849"/>
-
+        <TextBox x:Name="tvDstPath" HorizontalAlignment="Left" Height="20" Margin="115,521,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="849"/>
+        <GroupBox x:Name="imageOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="454" Visibility="Hidden">
+            <Label Content="DankLabel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+        </GroupBox>
+        <GroupBox x:Name="modelOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="366" Visibility="Hidden">
+            <Label Content="model" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+        </GroupBox>
+        <Label Content="Included: " HorizontalAlignment="Left" Margin="206,-4,0,0" VerticalAlignment="Top" Width="60"/>
+        <CheckBox x:Name="ckbIncluded" HorizontalAlignment="Left" Margin="266,2,0,0" VerticalAlignment="Top" Width="18" Height="16" Checked="ckbIncluded_Checked" Unchecked="ckbIncluded_Unchecked"/>
     </Grid>
 </Window>

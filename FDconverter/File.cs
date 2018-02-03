@@ -40,12 +40,14 @@ namespace FDconverter {
 
         private int _progress;
         private FileType _type;
+        private bool _included;
 
         public string path { get; }
         public long size { get; }
         public string sizeString { get; set; }
         public FileType type { get { return _type; } set { _type = value; OnPropertyChanged(); } }
         public int progress { get { return _progress; } set { _progress = value; OnPropertyChanged(); } }
+        public bool included { get { return _included; } set { _included = value; OnPropertyChanged(); Console.WriteLine("SA"); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         
@@ -54,13 +56,14 @@ namespace FDconverter {
             this.size = size;
             this.type = GetFileTypeFromExtension(path);
             progress = 0;
+            included = true;
 
             if (size >= 1024 * 1024 * 1024) {
-                sizeString = string.Format("{0:F2} GB", (float)size / (1024.0f * 1024.0f * 1024.0f));
+                sizeString = string.Format("{0:F2} GB", size / (1024.0f * 1024.0f * 1024.0f));
             } else if (size >= 1024 * 1024) {
-                sizeString = string.Format("{0:F2} MB", (float)size / (1024.0f * 1024.0f));
+                sizeString = string.Format("{0:F2} MB", size / (1024.0f * 1024.0f));
             } else if (size >= 1024) {
-                sizeString = string.Format("{0:F2} KB", (float)size / (1024.0f));
+                sizeString = string.Format("{0:F2} KB", size / (1024.0f));
             } else {
                 sizeString = string.Format("{0:F2} Bytes", size);
             }

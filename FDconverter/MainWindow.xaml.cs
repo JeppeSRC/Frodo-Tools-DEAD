@@ -51,6 +51,17 @@ namespace FDconverter {
 
             lvFiles.ItemsSource = files;
             exePath = Assembly.GetEntryAssembly().Location;
+            exePath = exePath.Remove(exePath.Length - 15, 15);
+
+            FileType[] types = new FileType[3];
+
+            types[(int)FileType.Unknown] = FileType.Unknown;
+            types[(int)FileType.Image] = FileType.Image;
+            types[(int)FileType.Model] = FileType.Model;
+
+            cbType.ItemsSource = types;
+
+            tvDstPath.Text = exePath + "ouput\\";
         }
 
         private bool AddFolder(string folder) {
@@ -88,6 +99,50 @@ namespace FDconverter {
                 } catch(Exception e) {
                     if (AddFolder(files[i]) == false) MessageBox.Show(e.GetType().ToString(), string.Format("Exception Opening \"{0}\"", files[i]), MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
+            }
+        }
+
+        private void SetOptionsGroupVisibility(FileType type) {
+            switch (type) {
+                case FileType.Unknown:
+                    imageOptionsGroup.Visibility = Visibility.Hidden;
+                    modelOptionsGroup.Visibility = Visibility.Hidden;
+                    break;
+                case FileType.Image:
+                    imageOptionsGroup.Visibility = Visibility.Visible;
+                    modelOptionsGroup.Visibility = Visibility.Hidden;
+                    break;
+                case FileType.Model:
+                    modelOptionsGroup.Visibility = Visibility.Visible;
+                    imageOptionsGroup.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
+
+        private void UpdateIncludeAllCheckbox() {
+            if (lvFiles.SelectedItems.Count == 0) return;
+
+            FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
+
+            if (lvFiles.SelectedItems.Count == 1) {
+                ckbIncluded.IsChecked = tmp.included;
+                return;
+            }
+
+            bool isAllIncluded = true;
+
+            for (int i = 1; i < lvFiles.SelectedItems.Count; i++) {
+                FDFile file = (FDFile)lvFiles.SelectedItems[i];
+
+                if (tmp.included != file.included && isAllIncluded) {
+                    isAllIncluded = false;
+                }
+            }
+
+            if (!isAllIncluded) {
+                ckbIncluded.IsChecked = null;
+            } else {
+                ckbIncluded.IsChecked = tmp.included;
             }
         }
 
@@ -146,21 +201,69 @@ namespace FDconverter {
             }
         }
 
-        private void lvFiles_MouseDown(object sender, MouseButtonEventArgs e) {
-
-        }
-
         private void Button_Click_Destination(object sender, RoutedEventArgs e) {
             System.Windows.Forms.FolderBrowserDialog diag = new System.Windows.Forms.FolderBrowserDialog();
 
             diag.RootFolder = Environment.SpecialFolder.MyComputer;
             if (diag.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                tvDstPath.Text = diag.SelectedPath;
+                tvDstPath.Text = diag.SelectedPath + "\\";
             }
         }
 
         private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (cbType.SelectedIndex == -1) return;
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
+                ((FDFile)lvFiles.SelectedItems[i]).type = (FileType)cbType.SelectedIndex;
+            }
 
+            SetOptionsGroupVisibility((FileType)cbType.SelectedIndex);
+        }
+
+        private void lvFiles_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
+
+            cbType.SelectionChanged -= cbType_SelectionChanged;
+
+            cbType.SelectedIndex = 0;
+
+            for (int i = 1; i < lvFiles.SelectedItems.Count; i++) {
+                FDFile file = (FDFile)lvFiles.SelectedItems[i];
+                if (tmp.type != file.type) {
+                    cbType.SelectedIndex = -1;
+                }
+            }
+
+            if (cbType.SelectedIndex == 0) {
+                cbType.SelectedIndex = (int)tmp.type;
+                SetOptionsGroupVisibility(tmp.type);
+            } else {
+                imageOptionsGroup.Visibility = Visibility.Hidden;
+                modelOptionsGroup.Visibility = Visibility.Hidden;
+            }
+
+            cbType.SelectionChanged += cbType_SelectionChanged;
+
+            UpdateIncludeAllCheckbox();
+        }
+
+        private void ckbIncluded_Checked(object sender, RoutedEventArgs e) {
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
+                ((FDFile)lvFiles.SelectedItems[i]).included = true;
+            }
+        }
+
+        private void ckbIncluded_Unchecked(object sender, RoutedEventArgs e) {
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
+                ((FDFile)lvFiles.SelectedItems[i]).included = false;
+            }
+        }
+
+        private void ckbItem_Checked(object sender, RoutedEventArgs e) {
+            UpdateIncludeAllCheckbox();
+        }
+
+        private void ckbItem_Unchecked(object sender, RoutedEventArgs e) {
+            UpdateIncludeAllCheckbox();
         }
     }
 }
