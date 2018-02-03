@@ -31,6 +31,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+
         <Button Content="Add" HorizontalAlignment="Left" Margin="10,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Add"/>
         <Button Content="Remove" HorizontalAlignment="Left" Margin="115,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Remove"/>
         <Button Content="Start" HorizontalAlignment="Left" Margin="220,304,0,0" VerticalAlignment="Top" Width="100"/>
@@ -39,11 +41,17 @@
         <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="51,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged"/>
         <Button Content="Destination" HorizontalAlignment="Left" Margin="10,521,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Destination"/>
         <TextBox x:Name="tvDstPath" HorizontalAlignment="Left" Height="20" Margin="115,521,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="849"/>
-        <GroupBox x:Name="imageOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="454" Visibility="Hidden">
-            <Label Content="DankLabel" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+
+        <GroupBox x:Name="imageOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="454" Visibility="Visible">
+            <Grid HorizontalAlignment="Left" Height="262" Margin="10,0,-2,-12" VerticalAlignment="Top" Width="434">
+                <ComboBox x:Name="cbImageChannels" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Width="110" SelectionChanged="cbImageChannels_SelectionChanged"/>
+                <ComboBox x:Name="cbImageSizes" VerticalAlignment="Bottom" Margin="10,0,314,203" Width="110" SelectionChanged="cbImageSizes_SelectionChanged"/>
+            </Grid>
         </GroupBox>
-        <GroupBox x:Name="modelOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="366" Visibility="Hidden">
-            <Label Content="model" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
+
+
+        <GroupBox x:Name="modelOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="{Binding ElementName=imageOptionsGroup, Path=ActualHeight}" Margin="10,27,0,0" VerticalAlignment="Top" Width="{Binding ElementName=imageOptionsGroup, Path=ActualWidth}" Visibility="Hidden">
+            <Label Content="Model conversion support not yet implemented!" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100"/>
         </GroupBox>
         <Label Content="Included: " HorizontalAlignment="Left" Margin="206,-4,0,0" VerticalAlignment="Top" Width="60"/>
         <CheckBox x:Name="ckbIncluded" HorizontalAlignment="Left" Margin="266,2,0,0" VerticalAlignment="Top" Width="18" Height="16" Checked="ckbIncluded_Checked" Unchecked="ckbIncluded_Unchecked"/>

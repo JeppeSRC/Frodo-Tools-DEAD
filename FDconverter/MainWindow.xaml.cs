@@ -28,7 +28,7 @@ namespace FDconverter {
             List<int> tmp = new List<int>(indices);
 
             for (int i = 0; i < indices.Count; i++) {
-                int max = 0;
+                 int max = 0;
 
                 for (int j = 0; j < tmp.Count; j++) {
                     if (tmp[j] > max) max = tmp[j];
@@ -67,8 +67,10 @@ namespace FDconverter {
         private bool AddFolder(string folder) {
             List<string> f = null;
             try {
-                 f = new List<string>(Directory.EnumerateDirectories(folder));
-            } catch (Exception e) {
+                f = new List<string>(Directory.EnumerateDirectories(folder));
+            } catch (IOException e) {
+                return false;
+            }catch (Exception e) {
                 MessageBox.Show(e.Message, string.Format("Exception enumarting folder \"{0}\"", folder), MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
@@ -92,13 +94,7 @@ namespace FDconverter {
 
         private void AddFiles(string[] files) {
             for (int i = 0; i < files.Length; i++) {
-                try {
-                    FileStream file = new FileStream(files[i], FileMode.Open);
-                    this.files.Add(new FDFile(files[i], file.Length));
-                    file.Close();
-                } catch(Exception e) {
-                    if (AddFolder(files[i]) == false) MessageBox.Show(e.GetType().ToString(), string.Format("Exception Opening \"{0}\"", files[i]), MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
+               if (AddFolder(files[i]) == false) this.files.Add(FDFile.CreateFile(files[i]));
             }
         }
 
@@ -123,7 +119,7 @@ namespace FDconverter {
             if (lvFiles.SelectedItems.Count == 0) return;
 
             FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
-
+            
             if (lvFiles.SelectedItems.Count == 1) {
                 ckbIncluded.IsChecked = tmp.included;
                 return;
@@ -146,23 +142,31 @@ namespace FDconverter {
             }
         }
 
+        private List<int> GetFileIndices(List<FDFile> list) {
+
+            List<int> indices = new List<int>();
+
+            for (int i = 0; i < list.Count; i++) {
+                for (int j = 0; j < files.Count; j++) {
+                    if (list[i] == files[j]) indices.Add(j);
+                }
+            }
+
+            Sort(ref indices);
+
+            return indices;
+        }
+
         private void lvFiles_Drop(object sender, DragEventArgs e) {
             AddFiles((string[])e.Data.GetData(DataFormats.FileDrop));
         }
 
         private void lvFiles_KeyDown(object sender, KeyEventArgs e) { 
             if (e.Key == Key.Delete) {
-                var tmp = lvFiles.SelectedItems;
+                List<FDFile> tmp = lvFiles.SelectedItems.Cast<FDFile>().ToList();
 
-                List<int> indices = new List<int>();
 
-                for (int i = 0; i < tmp.Count; i++) {
-                    for (int j = 0; j < files.Count; j++) {
-                        if (tmp[i] == files[j]) indices.Add(j);
-                    }
-                }
-
-                Sort(ref indices);
+                List<int> indices = GetFileIndices(tmp);
 
                 for (int i = 0; i < indices.Count; i++) {
                     files.RemoveAt(indices[i]);
@@ -184,17 +188,9 @@ namespace FDconverter {
         }
 
         private void Button_Click_Remove(object sender, RoutedEventArgs e) {
-            var tmp = lvFiles.SelectedItems;
+            List<FDFile> tmp = lvFiles.SelectedItems.Cast<FDFile>().ToList();
 
-            List<int> indices = new List<int>();
-
-            for (int i = 0; i < tmp.Count; i++) {
-                for (int j = 0; j < files.Count; j++) {
-                    if (tmp[i] == files[j]) indices.Add(j);
-                }
-            }
-
-            Sort(ref indices);
+            List<int> indices = GetFileIndices(tmp);
 
             for (int i = 0; i < indices.Count; i++) {
                 files.RemoveAt(indices[i]);
@@ -212,14 +208,30 @@ namespace FDconverter {
 
         private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (cbType.SelectedIndex == -1) return;
-            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
-                ((FDFile)lvFiles.SelectedItems[i]).type = (FileType)cbType.SelectedIndex;
+
+            List<FDFile> selected = lvFiles.SelectedItems.Cast<FDFile>().ToList();
+            
+            List<int> indices = GetFileIndices(selected);
+
+            FileType type = (FileType)cbType.SelectedIndex;
+
+            for (int i = 0; i < indices.Count; i++) {
+                FDFile current = files[indices[i]];
+                switch (type) {
+                    case FileType.Unknown:
+                        current.type = (FileType)cbType.SelectedIndex;
+                        break;
+                    case FileType.Image:
+                        files[indices[i]] = new FDTextureFile(current);
+                        break;
+                }
             }
 
             SetOptionsGroupVisibility((FileType)cbType.SelectedIndex);
         }
 
         private void lvFiles_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (lvFiles.SelectedItems.Count == 0) return;
             FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
 
             cbType.SelectionChanged -= cbType_SelectionChanged;
@@ -264,6 +276,18 @@ namespace FDconverter {
 
         private void ckbItem_Unchecked(object sender, RoutedEventArgs e) {
             UpdateIncludeAllCheckbox();
+        }
+
+        private void cbImageChannels_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
+                ((FDTextureFile)lvFiles.SelectedItems[i]).channel = (TextureChannels)cbImageChannels.SelectedIndex;
+            }
+        }
+
+        private void cbImageSizes_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
+                ((FDTextureFile)lvFiles.SelectedItems[i]).channelType = (TextureChannelType)cbImageSizes.SelectedIndex;
+            }
         }
     }
 }
