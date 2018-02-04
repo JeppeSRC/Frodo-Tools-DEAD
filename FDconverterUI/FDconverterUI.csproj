@@ -126,5 +126,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FDconverterCLI\FDconverterCLI.vcxproj">
+      <Project>{1af87795-f282-4cbd-b1e4-7d454c57b43b}</Project>
+      <Name>FDconverter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
