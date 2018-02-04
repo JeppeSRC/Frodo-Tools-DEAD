@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDconverter", "FDconverter\FDconverter.csproj", "{2750DB82-C95D-4FA8-A8BF-75D3C4D91C81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDconverterUI", "FDconverterUI\FDconverterUI.csproj", "{2750DB82-C95D-4FA8-A8BF-75D3C4D91C81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
