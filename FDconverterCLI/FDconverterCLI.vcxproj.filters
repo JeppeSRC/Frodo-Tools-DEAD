@@ -18,12 +18,12 @@
     <ClCompile Include="src\assembly.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\converter\converter.cpp">
+    <ClCompile Include="src\converter\convertercli.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\converter\converter.h">
+    <ClInclude Include="src\converter\convertercli.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

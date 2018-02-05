@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace FDconverter {
+namespace FDconverterCLI {
 
 public enum class TextureChannel {
 	R,

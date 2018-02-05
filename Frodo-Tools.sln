@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FDconverterUI", "FDconverte
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FDconverterCLI", "FDconverterCLI\FDconverterCLI.vcxproj", "{1AF87795-F282-4CBD-B1E4-7D454C57B43B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FDConverter", "FDConverter\FDConverter.vcxproj", "{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,12 @@ Global
 		{1AF87795-F282-4CBD-B1E4-7D454C57B43B}.Release|Any CPU.Build.0 = Release|x64
 		{1AF87795-F282-4CBD-B1E4-7D454C57B43B}.Release|x64.ActiveCfg = Release|x64
 		{1AF87795-F282-4CBD-B1E4-7D454C57B43B}.Release|x64.Build.0 = Release|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Debug|x64.ActiveCfg = Debug|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Debug|x64.Build.0 = Debug|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Release|Any CPU.ActiveCfg = Release|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Release|x64.ActiveCfg = Release|x64
+		{DB5B99F0-CD9B-4B37-951D-A418C54AFCD9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

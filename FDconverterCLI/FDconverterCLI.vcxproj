@@ -59,7 +59,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)FDconverter\src</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -75,7 +75,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;$(SolutionDir)FDconverter\src</AdditionalIncludeDirectories>
       <AssemblerOutput>AssemblyAndSourceCode</AssemblerOutput>
     </ClCompile>
     <Link>
@@ -85,10 +85,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\assembly.cpp" />
-    <ClCompile Include="src\converter\converter.cpp" />
+    <ClCompile Include="src\converter\convertercli.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\converter\converter.h" />
+    <ClInclude Include="src\converter\convertercli.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FDConverter\FDConverter.vcxproj">
+      <Project>{db5b99f0-cd9b-4b37-951d-a418c54afcd9}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
