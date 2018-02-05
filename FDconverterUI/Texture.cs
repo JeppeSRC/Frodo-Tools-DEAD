@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FDconverterCLI;
 
 namespace FDconverter {
 
@@ -23,7 +24,7 @@ namespace FDconverter {
             channel = TextureChannel.RGBA;
             channelType = TextureChannelType.Uint8;
 
-            FDConverter.ConvertImage("", "", TextureChannel.R, TextureChannelType.Float32, new FDconverter.FPProgressCallBack(ProgressCallback));
+            FDConverter.ConvertImage("", "", TextureChannel.R, TextureChannelType.Float32, new FPProgressCallBack(ProgressCallback));
         }
 
         private void ProgressCallback(int progress) {

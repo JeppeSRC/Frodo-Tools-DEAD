@@ -55,14 +55,14 @@ namespace FDconverter {
 
         private int _progress;
         private FileType _type;
-        private bool _included;
+        private bool? _included;
 
         public string path { get; }
         public long size { get; }
         public string sizeString { get; set; }
         public FileType type { get { return _type; } set { _type = value; OnPropertyChanged(); } }
         public int progress { get { return _progress; } set { _progress = value; OnPropertyChanged(); } }
-        public bool included { get { return _included; } set { _included = value; OnPropertyChanged(); } }
+        public bool? included { get { return _included; } set { _included = value; OnPropertyChanged(); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -73,7 +73,7 @@ namespace FDconverter {
             path = other.path;
             size = other.size;
             this.type = type;
-            progress = 0;
+            progress = -1;
             included = other.included;
             sizeString = other.sizeString;
         } 
@@ -83,7 +83,7 @@ namespace FDconverter {
             this.path = path;
             this.size = file.Length;
             this.type = type;
-            progress = 0;
+            progress = -1;
             included = true;
 
 

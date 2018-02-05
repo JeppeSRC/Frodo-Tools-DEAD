@@ -1,5 +1,6 @@
 #pragma once
 
+#include <converter/converter.h>
 
 namespace FDconverterCLI {
 
@@ -16,6 +17,7 @@ public enum class TextureChannelType {
 	Uint32,
 	Float32
 };
+
 
 public delegate void FPProgressCallBack(int);
 

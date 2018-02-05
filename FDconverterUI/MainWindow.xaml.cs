@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using FDconverterCLI;
+
 namespace FDconverter {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -46,7 +48,6 @@ namespace FDconverter {
 
         public MainWindow() {
             InitializeComponent();
-             
             files = new ObservableCollection<FDFile>();
 
             lvFiles.ItemsSource = files;
@@ -66,9 +67,9 @@ namespace FDconverter {
                 channels[i] = (TextureChannel)i;
             }
 
-            TextureChannelType[] channelTypes = new TextureChannelType[4];
+            TextureChannelType[] channelTypes = new TextureChannelType[1];
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < 1; i++) {
                 channelTypes[i] = (TextureChannelType)i;
             }
 
@@ -113,6 +114,10 @@ namespace FDconverter {
         private void AddFiles(string[] files) {
             for (int i = 0; i < files.Length; i++) {
                if (AddFolder(files[i]) == false) this.files.Add(FDFile.CreateFile(files[i]));
+            }
+
+            if (this.files.Count > 0 ) {
+                btnStart.IsEnabled = true;
             }
         }
 
@@ -175,6 +180,19 @@ namespace FDconverter {
             return indices;
         }
 
+        private void RemoveFiles(List<FDFile> files) {
+
+            for (int i = 0; i < files.Count; i++) {
+                if (files[i].progress != -1) files.RemoveAt(i);
+            }
+
+            List<int> indices = GetFileIndices(files);
+
+            for (int i = 0; i < indices.Count; i++) {
+                this.files.RemoveAt(indices[i]);
+            }
+        }
+
         private void lvFiles_Drop(object sender, DragEventArgs e) {
             AddFiles((string[])e.Data.GetData(DataFormats.FileDrop));
         }
@@ -183,12 +201,7 @@ namespace FDconverter {
             if (e.Key == Key.Delete) {
                 List<FDFile> tmp = lvFiles.SelectedItems.Cast<FDFile>().ToList();
 
-
-                List<int> indices = GetFileIndices(tmp);
-
-                for (int i = 0; i < indices.Count; i++) {
-                    files.RemoveAt(indices[i]);
-                }
+                RemoveFiles(tmp);
             }
         }
 
@@ -208,11 +221,7 @@ namespace FDconverter {
         private void Button_Click_Remove(object sender, RoutedEventArgs e) {
             List<FDFile> tmp = lvFiles.SelectedItems.Cast<FDFile>().ToList();
 
-            List<int> indices = GetFileIndices(tmp);
-
-            for (int i = 0; i < indices.Count; i++) {
-                files.RemoveAt(indices[i]);
-            }
+            RemoveFiles(tmp);
         }
 
         private void Button_Click_Destination(object sender, RoutedEventArgs e) {
@@ -233,6 +242,8 @@ namespace FDconverter {
 
             FileType type = (FileType)cbType.SelectedIndex;
 
+            lvFiles.SelectionChanged -= lvFiles_SelectionChanged;
+
             for (int i = 0; i < indices.Count; i++) {
                 FDFile current = files[indices[i]];
                 switch (type) {
@@ -249,11 +260,25 @@ namespace FDconverter {
                 lvFiles.SelectedItems.Add(files[indices[i]]);
             }
 
+            lvFiles.SelectionChanged += lvFiles_SelectionChanged;
+
             SetOptionsGroupVisibility((FileType)cbType.SelectedIndex);
         }
 
         private void lvFiles_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (lvFiles.SelectedItems.Count == 0) return;
+            if (lvFiles.SelectedItems.Count == 0) {
+                btnCancel.IsEnabled = false;
+                btnRemove.IsEnabled = false;
+            } else {
+                foreach (FDFile f in lvFiles.SelectedItems) {
+                    if (f.included == null) {
+                        btnCancel.IsEnabled = true;
+                    } 
+                }
+
+                btnRemove.IsEnabled = true;
+            }
+
             FDFile tmp = (FDFile)lvFiles.SelectedItems[0];
 
             cbType.SelectionChanged -= cbType_SelectionChanged;
@@ -322,10 +347,21 @@ namespace FDconverter {
 
         private void ckbItem_Checked(object sender, RoutedEventArgs e) {
             UpdateIncludeAllCheckbox();
+
+            btnStart.IsEnabled = true;
         }
 
         private void ckbItem_Unchecked(object sender, RoutedEventArgs e) {
             UpdateIncludeAllCheckbox();
+
+            foreach (FDFile f in files) {
+                if (f.included == true) {
+                    btnStart.IsEnabled = true;
+                    return;
+                }
+            }
+
+            btnStart.IsEnabled = false;
         }
 
         private void cbImageChannels_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -338,6 +374,10 @@ namespace FDconverter {
             for (int i = 0; i < lvFiles.SelectedItems.Count; i++) {
                 ((FDTextureFile)lvFiles.SelectedItems[i]).channelType = (TextureChannelType)cbImageSizes.SelectedIndex;
             }
+        }
+
+        private void Button_Click_Cancel(object sender, RoutedEventArgs e) {
+
         }
     }
 }
