@@ -1,16 +1,17 @@
 #pragma once
 
+#include "../types.h"
 
 namespace FD {
 
-enum class TextureChannel {
+enum class TextureChannel : byte {
 	R,
 	RG,
 	RGB,
 	RGBA,
 };
 
-enum class TextureChannelType {
+enum class TextureChannelType : byte {
 	Uint8,
 	Uint16,
 	Uint32,

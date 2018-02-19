@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using FDconverterCLI;
 
 namespace FDconverter {
@@ -23,12 +23,25 @@ namespace FDconverter {
         public FDTextureFile(string path) : base(path, FileType.Image) {
             channel = TextureChannel.RGBA;
             channelType = TextureChannelType.Uint8;
-
-            FDConverter.ConvertImage("", "", TextureChannel.R, TextureChannelType.Float32, new FPProgressCallBack(ProgressCallback));
         }
 
         private void ProgressCallback(int progress) {
             this.progress = progress;
+        }
+
+        public override void StartConversion(string outPath) {
+            base.StartConversion(outPath);
+            _converterThread = new Thread(new ParameterizedThreadStart(ThreadMethod));
+            _converterThread.Start(outPath);
+        }
+
+        private void ThreadMethod(Object obj) {
+
+            string outPath = (string)obj;
+
+            FDConverter.ConvertImage(path, outPath, channel, channelType, new FPProgressCallBack(ProgressCallback));
+
+            EndOfConversion();
         }
 
     }

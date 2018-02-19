@@ -118,6 +118,8 @@ namespace FDconverter {
 
             if (this.files.Count > 0 ) {
                 btnStart.IsEnabled = true;
+                cbType.IsEnabled = true;
+                ckbIncluded.IsEnabled = true;
             }
         }
 
@@ -378,6 +380,14 @@ namespace FDconverter {
 
         private void Button_Click_Cancel(object sender, RoutedEventArgs e) {
 
+        }
+
+        private void btnStart_Click(object sender, RoutedEventArgs e) {
+            foreach (FDFile file in files) {
+                if (file.included == true) {
+                    file.StartConversion("");
+                }
+            }
         }
     }
 }

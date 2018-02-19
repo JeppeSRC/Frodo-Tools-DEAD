@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -38,7 +38,11 @@ namespace FDconverter {
         };
 
         private static FileExtension[] extensions = { new FileExtension(".png", FileType.Image),
+                                                      new FileExtension(".PNG", FileType.Image),
                                                       new FileExtension(".jpg", FileType.Image),
+                                                      new FileExtension(".JPG", FileType.Image),
+                                                      new FileExtension(".jpeg", FileType.Image),
+                                                      new FileExtension(".JPEG", FileType.Image),
                                                       new FileExtension(".bmp", FileType.Image),
                                                       new FileExtension(".obj", FileType.Model)};
 
@@ -53,6 +57,8 @@ namespace FDconverter {
             return FileType.Unknown;
         }
 
+        protected Thread _converterThread;
+
         private int _progress;
         private FileType _type;
         private bool? _included;
@@ -63,6 +69,7 @@ namespace FDconverter {
         public FileType type { get { return _type; } set { _type = value; OnPropertyChanged(); } }
         public int progress { get { return _progress; } set { _progress = value; OnPropertyChanged(); } }
         public bool? included { get { return _included; } set { _included = value; OnPropertyChanged(); } }
+        public Thread converterThread { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -97,10 +104,13 @@ namespace FDconverter {
                 sizeString = string.Format("{0:F2} Bytes", size);
             }
         }
-        
-       protected virtual void OnPropertyChanged([CallerMemberName] string name = "") {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-       }
 
+        public virtual void StartConversion(string outPath) { included = null; }
+
+        protected virtual void EndOfConversion() { included = false; }
+        
+        protected virtual void OnPropertyChanged([CallerMemberName] string name = "") {
+             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

@@ -35,15 +35,15 @@
 
         <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="10,304,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Add" ToolTip="Add files to the list for conversion"/>
         <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="115,304,0,0" VerticalAlignment="Top" Width="100" IsEnabled="False" Click="Button_Click_Remove" ToolTip="Removes files from the list"/>
-        <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="220,304,0,0" VerticalAlignment="Top" Width="100" IsEnabled="False" ToolTip="Starts the conversion of included files"/>
+        <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="220,304,0,0" VerticalAlignment="Top" Width="100" IsEnabled="False" ToolTip="Starts the conversion of included files" Click="btnStart_Click"/>
         <Button x:Name="btnCancel"  Content="Cancel" HorizontalAlignment="Left" Margin="325,304,0,0" VerticalAlignment="Top" Width="100" IsEnabled="False" Click="Button_Click_Cancel" ToolTip="Cancels conversion for all selected resources"/>
         <ProgressBar x:Name="pbTotal" HorizontalAlignment="Left" Height="20" Margin="430,304,0,0" VerticalAlignment="Top" Width="534"/>
         <Label Content="Type: " HorizontalAlignment="Left" Margin="10,-4,0,0" VerticalAlignment="Top" Width="41" />
-        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="51,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged" ToolTip="Sets the type of resource the file should be converted to"/>
+        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Margin="51,0,0,0" VerticalAlignment="Top" Width="150" SelectionChanged="cbType_SelectionChanged" IsEnabled="False" ToolTip="Sets the type of resource the file should be converted to"/>
         <Button Content="Destination" HorizontalAlignment="Left" Margin="10,521,0,0" VerticalAlignment="Top" Width="100" Click="Button_Click_Destination" ToolTip="Sets an output folder for all the converted files"/>
         <TextBox x:Name="tvDstPath" HorizontalAlignment="Left" Height="20" Margin="115,521,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="849"/>
         <Label Content="Included: " HorizontalAlignment="Left" Margin="206,-4,0,0" VerticalAlignment="Top" Width="60"/>
-        <CheckBox x:Name="ckbIncluded" IsThreeState="False" HorizontalAlignment="Left" Margin="266,2,0,0" VerticalAlignment="Top" Width="18" Height="16" Checked="ckbIncluded_Checked" Unchecked="ckbIncluded_Unchecked" ToolTip="Includes the resource(s) for conversion"/>
+        <CheckBox x:Name="ckbIncluded" IsThreeState="False" HorizontalAlignment="Left" Margin="266,2,0,0" VerticalAlignment="Top" Width="18" Height="16" Checked="ckbIncluded_Checked" IsEnabled="False" Unchecked="ckbIncluded_Unchecked" ToolTip="Includes the resource(s) for conversion"/>
 
         <GroupBox x:Name="imageOptionsGroup" Header="Image Options" HorizontalAlignment="Left" Height="272" Margin="10,27,0,0" VerticalAlignment="Top" Width="454" Visibility="Visible">
             <Grid HorizontalAlignment="Left" Height="262" Margin="10,0,-2,-12" VerticalAlignment="Top" Width="434">

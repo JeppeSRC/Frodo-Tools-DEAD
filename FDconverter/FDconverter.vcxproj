@@ -12,7 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\converter\converter.h" />
+    <ClInclude Include="src\converter\formats.h" />
     <ClInclude Include="src\lib\stb_image.h" />
+    <ClInclude Include="src\types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\converter\converter.cpp" />
