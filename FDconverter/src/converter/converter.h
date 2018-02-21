@@ -1,22 +1,8 @@
 #pragma once
 
-#include "../types.h"
+#include "formats.h"
 
 namespace FD {
-
-enum class TextureChannel : byte {
-	R,
-	RG,
-	RGB,
-	RGBA,
-};
-
-enum class TextureChannelType : byte {
-	Uint8,
-	Uint16,
-	Uint32,
-	Float32
-};
 
 typedef void(__stdcall* FPProgressCallBack)(int);
 

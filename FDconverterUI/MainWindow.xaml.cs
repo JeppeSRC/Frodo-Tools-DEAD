@@ -61,15 +61,15 @@ namespace FDconverter {
             types[(int)FileType.Model] = FileType.Model;
 
 
-            TextureChannel[] channels = new TextureChannel[4];
+            TextureChannel[] channels = new TextureChannel[(int)TextureChannel.NUM];
 
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < (int)TextureChannel.NUM; i++) {
                 channels[i] = (TextureChannel)i;
             }
 
-            TextureChannelType[] channelTypes = new TextureChannelType[1];
+            TextureChannelType[] channelTypes = new TextureChannelType[(int)TextureChannelType.NUM];
 
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < (int)TextureChannelType.NUM; i++) {
                 channelTypes[i] = (TextureChannelType)i;
             }
 
@@ -385,7 +385,7 @@ namespace FDconverter {
         private void btnStart_Click(object sender, RoutedEventArgs e) {
             foreach (FDFile file in files) {
                 if (file.included == true) {
-                    file.StartConversion("");
+                    file.StartConversion(tvDstPath.Text);
                 }
             }
         }
