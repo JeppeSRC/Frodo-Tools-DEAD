@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -52,7 +53,7 @@ namespace FDconverter {
 
             lvFiles.ItemsSource = files;
             exePath = Assembly.GetEntryAssembly().Location;
-            exePath = exePath.Remove(exePath.Length - 15, 15);
+            exePath = exePath.Remove(exePath.Length - 17, 17);
 
             FileType[] types = new FileType[3];
 
@@ -81,6 +82,7 @@ namespace FDconverter {
             modelOptionsGroup.Visibility = Visibility.Hidden;
 
             tvDstPath.Text = exePath + "ouput\\";
+            Directory.CreateDirectory("output");
         }
 
         private bool AddFolder(string folder) {
