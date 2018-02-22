@@ -36,6 +36,7 @@ struct Header {
 	uint16 version;
 	byte type;
 	uint64 size;
+	uint32 compressedSize[2];
 };
 
 struct TextureHeader {

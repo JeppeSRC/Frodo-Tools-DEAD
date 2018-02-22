@@ -89,9 +89,6 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	texHeader.width = width;
 	texHeader.height = height;
 
-	fwrite(&header, sizeof(Header), 1, newFile);
-	fwrite(&texHeader, sizeof(TextureHeader), 1, newFile);
-
 	uint32 pixelsSize = width * height * numChannels * channelSize;
 
 	byte* pixels = new byte[pixelsSize];
@@ -118,10 +115,16 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 
 	bufferSize = LZ4_compress_default((const char*)pixels, (char*)data, pixelsSize, bufferSize);
 
+	header.compressedSize[1] = bufferSize;
+
 	bufferSize = LZ4_compress_default((const char*)data, (char*)pixels, bufferSize, LZ4_compressBound(bufferSize));
+
+	header.compressedSize[0] = bufferSize;
 	
 	delete[] data;
 
+	fwrite(&header, sizeof(Header), 1, newFile);
+	fwrite(&texHeader, sizeof(TextureHeader), 1, newFile);
 	fwrite(pixels, bufferSize, 1, newFile);
 	fclose(newFile);
 
