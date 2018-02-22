@@ -7,7 +7,7 @@ namespace FDconverterCLI {
 public enum class TextureChannel {
 	R,
 	RG,
-//	RGB,
+	RGB,
 	RGBA,
 
 	NUM
