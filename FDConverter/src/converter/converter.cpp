@@ -117,7 +117,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	byte* data = new byte[bufferSize];
 
 	bufferSize = LZ4_compress_default((const char*)pixels, (char*)data, pixelsSize, bufferSize);
-	
+
 	bufferSize = LZ4_compress_default((const char*)data, (char*)pixels, bufferSize, LZ4_compressBound(bufferSize));
 	
 	delete[] data;
@@ -127,7 +127,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 
 	delete[] pixels;
 
-	printf("Compression Ratio: \"%s\" -> %u\%\n", tmp.c_str(), (uint32)((((float32)bufferSize) / pixelsSize) * 100.0f));
+	printf("Compression Ratio: \"%s\" -> %u%%\n", tmp.c_str(), (uint32)((((float32)bufferSize) / pixelsSize) * 100.0f));
 
 	callback(100);
 }
