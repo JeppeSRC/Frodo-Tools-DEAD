@@ -112,6 +112,8 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 		}
 	}
 
+
+
 	fwrite(newPixels, bufferSize, 1, newFile);
 	fclose(newFile);
 

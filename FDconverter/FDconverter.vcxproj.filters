@@ -27,9 +27,15 @@
     <ClInclude Include="src\converter\formats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\lib\lz4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\converter\converter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lib\lz4.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
