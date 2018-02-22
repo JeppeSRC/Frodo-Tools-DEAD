@@ -85,7 +85,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	TextureHeader texHeader;
 
 	texHeader.version = FD_TEXTURE_HEADER_VERSION;
-	texHeader.pixelLayout = channel;
+	texHeader.pixelLayout = channel == TextureChannel::RGB ? TextureChannel::RGBA : channel;
 	texHeader.pixelChannelSize = type;
 	texHeader.width = width;
 	texHeader.height = height;
@@ -101,7 +101,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 			}
 
 			if (channel == TextureChannel::RGB) {
-				pixels[i * numChannels + 3] = 1.0f;
+				pixels[i * numChannels + 3] = 1;
 			}
 
 			int32 a = ((int32)(((float32)i / (width * height)) * 100.0f));
