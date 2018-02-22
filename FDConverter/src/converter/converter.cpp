@@ -40,6 +40,7 @@ byte get_num_channels(TextureChannel channel) {
 			return 1;
 		case TextureChannel::RG:
 			return 2;
+		case TextureChannel::RGB:
 		case TextureChannel::RGBA:
 			return 4;
 	}
@@ -99,9 +100,13 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 				pixels[i * numChannels + c] = imageData[i * 4 + c];
 			}
 
+			if (channel == TextureChannel::RGB) {
+				pixels[i * numChannels + 3] = 1.0f;
+			}
+
 			int32 a = ((int32)(((float32)i / (width * height)) * 100.0f));
 
-			if (a % 10 == 0) {
+			if (a % 5 == 0) {
 				callback(a);
 			}
 		}

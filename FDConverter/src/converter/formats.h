@@ -15,7 +15,7 @@ namespace FD {
 enum class TextureChannel : byte {
 	R,
 	RG,
-	//RGB,
+	RGB,
 	RGBA,
 
 	NUM
