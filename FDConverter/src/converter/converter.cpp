@@ -1,5 +1,5 @@
 #include "converter.h"
-
+#include "../lib/lz4.h"
 
 #include <stdio.h>
 #include <string>
@@ -60,7 +60,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	FILE* newFile = fopen(tmp.c_str(), "wb");
 
 	if (newFile == nullptr) {
-		printf("Failed to create destination file \"%s\"", tmp.c_str());
+		printf("Failed to create destination file \"%s\"\n", tmp.c_str());
 		return;
 	}
 
@@ -68,8 +68,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	int32 height = 0;
 	int32 c = 0;
 
-	byte* pixelData = stbi_load_from_file(file, &width, &height, &c, 4);
-
+	byte* imageData = stbi_load_from_file(file, &width, &height, &c, 4);
 
 	fclose(file);
 
@@ -93,18 +92,17 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	fwrite(&header, sizeof(Header), 1, newFile);
 	fwrite(&texHeader, sizeof(TextureHeader), 1, newFile);
 
-	uint32 bufferSize = width * height * numChannels * channelSize;
+	uint32 pixelsSize = width * height * numChannels * channelSize;
 
-	byte* newPixels = new byte[bufferSize];
+	byte* pixels = new byte[pixelsSize];
 
 	if (type == TextureChannelType::Uint8) {
 		for (uint32 i = 0; i < (uint32)(width * height); i++) {
-			//fwrite(pixelData + (i * 4), numChannels, 1, newFile);
 			for (byte c = 0; c < numChannels; c++) {
-				newPixels[i * numChannels + c] = pixelData[i * 4 + c];
+				pixels[i * numChannels + c] = imageData[i * 4 + c];
 			}
 
-			int a = ((int32)(((float)i / (width * height)) * 100.0f));
+			int32 a = ((int32)(((float32)i / (width * height)) * 100.0f));
 
 			if (a % 10 == 0) {
 				callback(a);
@@ -112,14 +110,24 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 		}
 	}
 
+	free(imageData);
 
+	uint32 bufferSize = LZ4_compressBound(pixelsSize);
 
-	fwrite(newPixels, bufferSize, 1, newFile);
+	byte* data = new byte[bufferSize];
+
+	bufferSize = LZ4_compress_default((const char*)pixels, (char*)data, pixelsSize, bufferSize);
+	
+	bufferSize = LZ4_compress_default((const char*)data, (char*)pixels, bufferSize, LZ4_compressBound(bufferSize));
+	
+	delete[] data;
+
+	fwrite(pixels, bufferSize, 1, newFile);
 	fclose(newFile);
 
-	delete[] newPixels;
-	free(pixelData);
+	delete[] pixels;
 
+	printf("Compression Ratio: \"%s\" -> %u\%\n", tmp.c_str(), (uint32)((((float32)bufferSize) / pixelsSize) * 100.0f));
 
 	callback(100);
 }
