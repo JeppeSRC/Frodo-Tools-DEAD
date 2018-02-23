@@ -2,9 +2,7 @@
 
 #include "../types.h"
 
-
-#define FD_HEADER_TYPE_TEXTURE 0x01
-#define FD_HEADER_TYPE_MODEL   0x02
+#define FD_HEADER_MAKE_SIG(a, b, c, d) (((uint32)d << 24) | ((uint32)c << 16) | ((uint32)b << 8) | a)
 
 #define FD_HEADER_VERSION 0x0001
 
@@ -30,11 +28,16 @@ enum class TextureChannelType : byte {
 	NUM
 };
 
-}
+enum class FileType : byte {
+	Texture,
+	Model,
+
+};
 
 struct Header {
+	uint32 signature;
 	uint16 version;
-	byte type;
+	FD::FileType type;
 	uint64 size;
 	uint32 compressedSize[2];
 };
@@ -46,3 +49,4 @@ struct TextureHeader {
 	uint16 width;
 	uint16 height;
 };
+}

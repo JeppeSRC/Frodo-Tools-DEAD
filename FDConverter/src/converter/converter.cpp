@@ -78,8 +78,9 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 
 	Header header;
 
+	header.signature = FD_HEADER_MAKE_SIG(' ', 'F', 'D', ' ');
 	header.version = FD_HEADER_VERSION;
-	header.type = FD_HEADER_TYPE_TEXTURE;
+	header.type = FileType::Texture;
 	header.size = sizeof(Header) + sizeof(TextureHeader) + (width * height * numChannels * channelSize);
 
 	TextureHeader texHeader;
