@@ -25,4 +25,5 @@ A tool that will convert resources to [Frodo's](https://github.com/JeppeSRC/Frod
 
 ## Libraries used
 
-[stb_image](https://github.com/nothings/stb) - [nothings](https://github.com/nothings)
+- [stb_image](https://github.com/nothings/stb) - [nothings](https://github.com/nothings)
+- [LZ4](https://github.com/lz4/lz4) - [Cyan4973](https://github.com/Cyan4973)
