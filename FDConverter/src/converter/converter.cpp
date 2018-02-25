@@ -149,7 +149,7 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 
 	delete[] pixels;
 
-	printf("Compression Ratio: \"%s\" -> %u%%\n", tmp.c_str(), (uint32)((((float32)bufferSize) / pixelsSize) * 100.0f));
+	printf("Compression Ratio: \"%s\" -> %f%%\n", tmp.c_str(), (((float32)bufferSize) / pixelsSize) * 100.0f);
 
 	callback(100);
 }
