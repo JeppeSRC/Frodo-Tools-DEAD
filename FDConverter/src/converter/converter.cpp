@@ -22,6 +22,17 @@ std::string get_file_name(const char* path) {
 
 	if (path[slashIndex] == '/' || path[slashIndex] == '\\') slashIndex++;
 
+	const char* filename = path + slashIndex;
+
+	uint_t nameLen = strlen(filename);
+
+	for (uint32 i = 0; i < nameLen; i++) {
+		if (filename[i] == '.') {
+
+			return std::string(filename, i);
+		}
+	}
+
 	return std::string(path + slashIndex);
 }
 
@@ -57,6 +68,8 @@ void ConvertImage(const char* path, const char* outPath, TextureChannel channel,
 	}
 
 	std::string tmp(std::string(outPath) + get_file_name(path));
+
+	tmp.append(".fdf");
 
 	FILE* newFile = fopen(tmp.c_str(), "wb");
 
